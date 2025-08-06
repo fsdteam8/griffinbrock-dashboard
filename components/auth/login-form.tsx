@@ -9,7 +9,7 @@ import Link from "next/link"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 
 export function LoginForm() {
   const [email, setEmail] = useState("")
@@ -17,7 +17,6 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,24 +30,13 @@ export function LoginForm() {
       })
 
       if (result?.error) {
-        toast({
-          title: "Error",
-          description: "Invalid credentials. Please try again.",
-          variant: "destructive",
-        })
+        toast.error("Invalid email or password")
       } else {
-        toast({
-          title: "Success",
-          description: "Logged in successfully!",
-        })
+        toast.success("Login successful")
         router.push("/dashboard")
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Login failed")
     } finally {
       setIsLoading(false)
     }
